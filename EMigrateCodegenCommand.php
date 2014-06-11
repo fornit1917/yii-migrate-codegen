@@ -2,7 +2,7 @@
 
 Yii::import('system.cli.commands.MigrateCommand');
 
-class ExtendedMigrateCommand extends MigrateCommand
+class EMigrateCodegenCommand extends MigrateCommand
 {
 	public $templatePartiallyImplementedFile;
 	
