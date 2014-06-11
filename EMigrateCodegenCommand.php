@@ -125,6 +125,7 @@ EOD;
 				return $this->getCodeForDropColumn($data);
 				break;
 		}
+		return '';
 	}
 	
 	protected function getCodeForDown($data)
@@ -141,6 +142,7 @@ EOD;
 				return $this->getCodeForAddColumn($data);
 				break;
 		}
+		return '';
 	}
 	
 	protected function getCodeForCreateTable($data)
