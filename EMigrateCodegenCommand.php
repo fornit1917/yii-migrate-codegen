@@ -135,10 +135,10 @@ EOD;
 			case 'dropTable':
 				break;
 			case 'addColumn':
-				return $this->getCodeForDropColumn($data['data']);
+				return $this->getCodeForDropColumn($data);
 				break;
 			case 'dropColumn':
-				return $this->getCodeForAddColumn($data['data']);
+				return $this->getCodeForAddColumn($data);
 				break;
 		}
 	}
