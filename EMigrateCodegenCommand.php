@@ -5,6 +5,7 @@ Yii::import('system.cli.commands.MigrateCommand');
 class EMigrateCodegenCommand extends MigrateCommand
 {
 	public $templatePartiallyImplementedFile;
+	public $createTableOptions = 'ENGINE=InnoDB CHARSET=utf8';
 	
 	public function actionCreate($args) 
 	{
@@ -29,6 +30,7 @@ class EMigrateCodegenCommand extends MigrateCommand
 		//it's partially implemented command
 		else
 		{
+			$this->addCommandLineParams($data, $args);
 			$template = $this->getPartiallyImplementedTemplate();
 			$content = strtr($template, array(
 				'{ClassName}' => $name,
@@ -68,6 +70,13 @@ class EMigrateCodegenCommand extends MigrateCommand
 		}
 		
 		return array();
+	}
+	
+	protected function addCommandLineParams(&$data, $args)
+	{
+		if ($data['command'] == 'createTable') {
+			$data['options'] = isset($args[1]) ? $args[1] : $this->createTableOptions;
+		}
 	}
 	
 	protected function getPartiallyImplementedTemplate()
@@ -115,8 +124,10 @@ EOD;
 	{
 		switch ($data['command']) {
 			case 'createTable':
+				return $this->getCodeForCreateTable($data);
 				break;
 			case 'dropTable':
+				return $this->getCodeForDropTable($data);
 				break;
 			case 'addColumn':
 				return $this->getCodeForAddColumn($data);
@@ -132,8 +143,10 @@ EOD;
 	{
 		switch ($data['command']) {
 			case 'createTable':
+				return $this->getCodeForDropTable($data);
 				break;
 			case 'dropTable':
+				return $this->getCodeForCreateTable($data);
 				break;
 			case 'addColumn':
 				return $this->getCodeForDropColumn($data);
@@ -147,12 +160,25 @@ EOD;
 	
 	protected function getCodeForCreateTable($data)
 	{
-		return '';
+		$createTableTemplate = 
+		'$this->createTable(\'{tableName}\', array(
+			
+		), {options});';
+		
+		return strtr($createTableTemplate, array(
+			'{tableName}' => $data['tableName'],
+			'{options}' => $data['options'] == 'null' 
+				? $data['options']
+				: "'".$data['options']."'"
+		));
 	}
 	
 	protected function getCodeForDropTable($data)
 	{
-		return '';
+		$dropTableTemplate = '$this->dropTable(\'{tableName}\');';
+		return strtr($dropTableTemplate, array(
+			'{tableName}' => $data['tableName']
+		));
 	}
 	
 	protected function getCodeForAddColumn($data)
