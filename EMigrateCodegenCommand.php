@@ -87,8 +87,8 @@ class EMigrateCodegenCommand extends MigrateCommand
 		}
 		else
 		{
-			return <<<EOD
-<?php
+			return 
+'<?php
 			
 class {ClassName} extends CDbMigration
 {
@@ -114,9 +114,8 @@ class {ClassName} extends CDbMigration
 		
 	}
 	*/
-}			
-EOD;
-			
+}
+';			
 		}
 	}
 	
