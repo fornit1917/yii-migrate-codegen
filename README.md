@@ -2,7 +2,7 @@ Yii Framework extension for simplification of code generation when creating migr
 In development. Not ready.
 
 ### Install
-Add file EMigrateCodegenCommand to your extenstions dir and add in config/console.php this code:
+Add file EMigrateCodegenCommand.php to your extenstions dir and add in config/console.php this code:
 ```
 <?php
 return array(
