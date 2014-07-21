@@ -74,8 +74,13 @@ class EMigrateCodegenCommand extends MigrateCommand
 	
 	protected function addCommandLineParams(&$data, $args)
 	{
-		if ($data['command'] == 'createTable') {
-			$data['options'] = isset($args[1]) ? $args[1] : $this->createTableOptions;
+		switch ($data['command']) {
+			case 'createTable':
+				$data['options'] = isset($args[1]) ? $args[1] : $this->createTableOptions;
+				break;
+			case 'addColumn':
+				$data['type'] = isset($args[1]) ? $args[1] : '';
+				break;
 		}
 	}
 	
@@ -182,10 +187,11 @@ class {ClassName} extends CDbMigration
 	
 	protected function getCodeForAddColumn($data)
 	{
-		$addColumnTemplate = '$this->addColumn(\'{tableName}\', \'{columnName}\', \'\');';
+		$addColumnTemplate = '$this->addColumn(\'{tableName}\', \'{columnName}\', \'{type}\');';
 		return strtr($addColumnTemplate, array(
 			'{tableName}' => $data['tableName'],
 			'{columnName}' => $data['columnName'],
+			'{type}' => $data['type']
 		));
 	}
 	
